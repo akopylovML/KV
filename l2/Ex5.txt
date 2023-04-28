@@ -9,3 +9,7 @@ Ex5: Парсинг JSON
 
 
 Ответом должна быть ссылка на скрипт в вашем репозитории.
+
+__________________________
+
+https://github.com/akopylovML/KV/blob/main/l2/json_parsing.py
