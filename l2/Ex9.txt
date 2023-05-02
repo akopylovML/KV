@@ -48,3 +48,8 @@ Ex9: Подбор пароля
 
 Ответом к задаче должен быть верный пароль и ссылка на коммит со скриптом.
 
+________________________________________
+
+Correct password is welcome
+https://github.com/akopylovML/KV/commit/c5bd1a49c2bd4d548ceb47814f612265da27e55b
+
