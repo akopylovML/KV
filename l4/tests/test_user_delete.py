@@ -109,7 +109,6 @@ class TestUserDelete(BaseCase):
         )
 
         Assertions.assert_status_code(response4, 200)
-        print(response4.content)
 
         # GET USER2, CHECK IF IT WAS DELETED
         response5 = MyRequests.get(
