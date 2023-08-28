@@ -16,3 +16,51 @@ https://github.com/akopylovML/KV/commit/082ae88c7d695217d5011b5b1af986a5aa5e00d5
 декораторы для возможности запуска тестов по фиче/истории. полезно в случае необходимости изолированных запусков по фиче или UC
 теги allure.step для описания действия/ожидания, благодаря которым в репорте при падении будет видно что ожидалось/случилось
 
+
+1) allure.step
+
+пример в тестах
+
+        with allure.step("Check response code, expected is 400"):
+            Assertions.assert_status_code(response, 400)
+
+во-первых позволяет описывать каждый шаг в свободной форме для удобного анализа в отчете
+во-вторых дает подсказку читающему код для понимания что в каком шаге происходит и ожидается
+
+2) @allure.feature или @allure.story
+
+примеры в тестах
+
+    @allure.feature('Create already existing user')
+    @allure.story('Create user with email, which is already taken')
+    def test_create_user_with_existing_email(self):
+        email = 'vinkotov@example.com'
+        data = self.prepare_registration_data(email)
+
+        response = MyRequests.post("/user", data=data)
+
+        with allure.step("Check response code, expected is 400"):
+            Assertions.assert_status_code(response, 400)
+        with allure.step("Check response content, throw error and actual text if failed"):
+            assert response.content.decode("utf-8") == f"Users with email '{email}' already exists", \
+                f"Unexpected response content {response.content}"
+
+    @allure.feature('Create user')
+    @allure.story('Create user successfully using generated email')
+    def test_create_user_succesfully(self):
+        data = self.prepare_registration_data()
+
+        response = MyRequests.post("/user", data=data)
+
+        Assertions.assert_status_code(response, 200)
+        Assertions.assert_json_has_key(response, "id")
+
+позволяет формировать тест-раны, нацеленные на определенный функционал или историю
+после разметки этими декоратороми можно запускать определенные тесты командой типа
+для декоратора @allure.feature
+python -m pytest --alluredir=.\test_results\ .\tests\test_user_register.py --allure-features 'Create user'
+
+или
+
+python -m pytest --alluredir=.\test_results\ .\tests\test_user_register.py --allure-stories 'Create user successfully using generated email'
+для декоратора  @allure.story
